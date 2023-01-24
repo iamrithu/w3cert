@@ -75,7 +75,7 @@ class RouterNotifier extends ChangeNotifier {
           path: '/notification',
           pageBuilder: (context, state) {
             return MaterialPage(
-              child: NotificationScreen(),
+              child: NotificationScreen(token: state.queryParams),
             );
           },
         ),
@@ -93,7 +93,7 @@ class RouterNotifier extends ChangeNotifier {
           path: '/task',
           pageBuilder: (context, state) {
             return MaterialPage(
-              child: const TaskScreen(),
+              child: TaskScreen(token: state.queryParams),
             );
           },
         ),

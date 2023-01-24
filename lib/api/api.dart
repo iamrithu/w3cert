@@ -25,15 +25,26 @@ class API {
     }
   }
 
-  Future notification() async {
-    dio.options.headers["Authorization"] =
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcG9ydGFsLnczY2VydC5pblwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3NDI5NDcxOSwiZXhwIjoxNzA1ODMwNzE5LCJuYmYiOjE2NzQyOTQ3MTksImp0aSI6ImJKMzlKdDhiN3ZYNlhISFIiLCJzdWIiOjEzLCJwcnYiOiI4MThmNWM5OGFjZTIzNzUzMmQ5ZDQ5NDNmZDhlZmI1NDBiODU1YjQyIiwicmVtZW1iZXIiOjEsInR5cGUiOjF9.FmNuwi8DKABQxSzmuR7iri6q5mBfqW9RC2rJUevLc98 ";
-
+  Future notification(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
     try {
       Response response = await dio.get(
         "notification",
       );
 
+      return response;
+    } on DioError catch (e) {
+      return e.response;
+    }
+  }
+
+  Future task(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+
+    try {
+      Response response = await dio.get(
+        "task",
+      );
       return response;
     } on DioError catch (e) {
       return e.response;

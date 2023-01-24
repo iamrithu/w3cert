@@ -9,7 +9,8 @@ import '../../router/route-const.dart';
 import '../home-screen/widget/custom-container.dart';
 
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic> token;
+  const NotificationScreen({Key? key, required this.token}) : super(key: key);
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -19,7 +20,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   List<dynamic> notification = [];
   @override
   void initState() {
-    API().notification().then((value) {
+    API().notification(widget.token["token"]).then((value) {
       if (value.statusCode != 200) {
         return print("error");
       }
@@ -63,31 +64,55 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 width: width,
                 height: constraints.maxHeight * 0.05,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: constraints.maxHeight * 0.05,
-                      width: constraints.maxHeight * 0.05,
-                      margin: EdgeInsets.only(left: 4),
-                      alignment: Alignment.center,
-                      child: Center(
-                        child: InkWell(
-                            onTap: () {
-                              context.pop();
-                            },
-                            child: Icon(
-                              Icons.arrow_back,
+                    Row(
+                      children: [
+                        Container(
+                          height: constraints.maxHeight * 0.05,
+                          width: constraints.maxHeight * 0.05,
+                          margin: EdgeInsets.only(left: 4),
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: InkWell(
+                                onTap: () {
+                                  context.pop();
+                                },
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Color.fromARGB(255, 27, 24, 73),
+                                )),
+                          ),
+                        ),
+                        Text(
+                          "Notifications",
+                          style: GoogleFonts.ptSans(
                               color: Color.fromARGB(255, 27, 24, 73),
-                            )),
-                      ),
+                              fontSize: width < 700 ? width / 24 : width / 45,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Notifications",
-                      style: GoogleFonts.ptSans(
+                    PopupMenuButton(
+                        // Callback that sets the selected popup menu item.
+                        onSelected: (value) {},
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Icon(
+                          Icons.more_vert_outlined,
                           color: Color.fromARGB(255, 27, 24, 73),
-                          fontSize: width < 700 ? width / 24 : width / 45,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0),
-                    ),
+                        ),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                              PopupMenuItem(
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    child: Text("clear"),
+                                  ),
+                                ),
+                              ),
+                            ])
                   ],
                 ),
               ),

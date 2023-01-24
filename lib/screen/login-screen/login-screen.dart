@@ -57,11 +57,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         setState(() {
           visible = !visible;
         });
+        ref
+            .read(tokenProvider.notifier)
+            .update((state) => value.data["data"]["token"]);
+
         ref.read(loggedInProvider.notifier).state = true;
       });
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: width,
         height: height,

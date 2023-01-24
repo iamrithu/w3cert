@@ -34,9 +34,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             CustomContainer(
               click: () {
-                context.pushNamed(RouterConstants.notification);
+                context.pushNamed(RouterConstants.notification,
+                    queryParams: {"token": ref.watch(tokenProvider)});
               },
-              content: "Activity",
+              content: "Notification",
               height: height * 0.1,
               widht: width * 0.9,
             ),
@@ -50,7 +51,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             CustomContainer(
               click: () {
-                context.pushNamed(RouterConstants.task);
+                context.pushNamed(RouterConstants.task,
+                    queryParams: {"token": ref.watch(tokenProvider)});
               },
               content: "Task",
               height: height * 0.1,
