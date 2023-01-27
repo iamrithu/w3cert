@@ -63,56 +63,48 @@ class _NotificationScreenState extends State<NotificationScreen> {
               Container(
                 width: width,
                 height: constraints.maxHeight * 0.08,
+                margin: EdgeInsets.only(
+                  right: 4,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Container(
-                          height: constraints.maxHeight * 0.05,
-                          width: constraints.maxHeight * 0.05,
-                          margin: EdgeInsets.only(left: 4),
-                          alignment: Alignment.center,
-                          child: Center(
-                            child: InkWell(
-                                onTap: () {
-                                  context.pop();
-                                },
+                        InkWell(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Container(
+                            height: constraints.maxHeight * 0.05,
+                            width: constraints.maxHeight * 0.05,
+                            margin: EdgeInsets.only(left: 4),
+                            alignment: Alignment.center,
+                            child: Card(
+                              elevation: 1,
+                              child: Center(
                                 child: Icon(
                                   Icons.arrow_back,
+                                  size: width < 700 ? width / 24 : width / 45,
                                   color: Color.fromARGB(255, 27, 24, 73),
-                                )),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        Text(
-                          "Notifications",
-                          style: GoogleFonts.ptSans(
-                              color: Color.fromARGB(255, 27, 24, 73),
-                              fontSize: width < 700 ? width / 24 : width / 45,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0),
+                        Container(
+                          width: width * 0.55,
+                          child: Text(
+                            "Notifications",
+                            style: GoogleFonts.ptSans(
+                                color: Color.fromARGB(255, 27, 24, 73),
+                                fontSize: width < 700 ? width / 30 : width / 45,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0),
+                          ),
                         ),
                       ],
                     ),
-                    PopupMenuButton(
-                        // Callback that sets the selected popup menu item.
-                        onSelected: (value) {},
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Icon(
-                          Icons.more_vert_outlined,
-                          color: Color.fromARGB(255, 27, 24, 73),
-                        ),
-                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                              PopupMenuItem(
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    child: Text("clear"),
-                                  ),
-                                ),
-                              ),
-                            ])
                   ],
                 ),
               ),
@@ -121,9 +113,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 height: constraints.maxHeight * 0.92,
                 child: notification.isEmpty
                     ? Center(
-                        child: LoadingAnimationWidget.hexagonDots(
+                        child: LoadingAnimationWidget.newtonCradle(
                             color: Color.fromARGB(255, 27, 24, 73),
-                            size: width * 0.1),
+                            size: width * 0.2),
                       )
                     : ListView(
                         children: [

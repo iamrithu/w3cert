@@ -114,109 +114,113 @@ class _AttendenceScreenState extends ConsumerState<AttendenceScreen> {
                   children: [
                     Row(
                       children: [
-                        Container(
-                          height: constraints.maxHeight * 0.05,
-                          width: constraints.maxHeight * 0.05,
-                          margin: EdgeInsets.only(left: 4),
-                          alignment: Alignment.center,
-                          child: Card(
-                            elevation: 1,
-                            child: Center(
-                              child: InkWell(
-                                  onTap: () {
-                                    context.pop();
-                                  },
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    size: width < 700 ? width / 24 : width / 45,
-                                    color: Color.fromARGB(255, 27, 24, 73),
-                                  )),
+                        InkWell(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Container(
+                            height: constraints.maxHeight * 0.05,
+                            width: constraints.maxHeight * 0.05,
+                            margin: EdgeInsets.only(left: 4),
+                            alignment: Alignment.center,
+                            child: Card(
+                              elevation: 1,
+                              child: Center(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  size: width < 700 ? width / 24 : width / 45,
+                                  color: Color.fromARGB(255, 27, 24, 73),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        Text(
-                          "Attendence Details (${DateFormat("dd-MM-yyy").format(selectedDate)})",
-                          style: GoogleFonts.ptSans(
-                              color: Color.fromARGB(255, 27, 24, 73),
-                              fontSize: width < 700 ? width / 24 : width / 45,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0),
+                        Container(
+                          width: width * 0.55,
+                          child: Text(
+                            "Attendence Details (${DateFormat("dd-MM-yyy").format(selectedDate)})",
+                            style: GoogleFonts.ptSans(
+                                color: Color.fromARGB(255, 27, 24, 73),
+                                fontSize: width < 700 ? width / 30 : width / 45,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0),
+                          ),
                         ),
                         Container(
                           width: width * 0.3,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Container(
-                                height: constraints.maxHeight * 0.05,
-                                width: constraints.maxHeight * 0.05,
-                                margin: EdgeInsets.only(left: 4),
-                                alignment: Alignment.center,
-                                child: Card(
-                                  elevation: 1,
-                                  child: Center(
-                                    child: InkWell(
-                                        onTap: () {
-                                          showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(2000),
-                                            lastDate: DateTime(2100),
-                                          ).then((value) {
-                                            setState(() {
-                                              selectedDate = value!;
-                                              task = [];
-                                              allTask = [];
-                                            });
-                                            API()
-                                                .attendence(
-                                                    widget.token["token"],
-                                                    DateFormat("dd-MM-yyyy")
-                                                        .format(selectedDate)
-                                                        .toString())
-                                                .then((value) {
-                                              print(value.toString());
-                                              if (value.statusCode != 200) {
-                                                return print("error");
-                                              }
-                                              setState(() {
-                                                task = value.data;
-                                                allTask = task;
-                                              });
-                                            });
-                                          });
-                                        },
-                                        child: Icon(
-                                          Icons.calendar_month,
-                                          size: width < 700
-                                              ? width / 24
-                                              : width / 45,
-                                          color:
-                                              Color.fromARGB(255, 27, 24, 73),
-                                        )),
+                              InkWell(
+                                onTap: () {
+                                  showDatePicker(
+                                    context: context,
+                                    initialDate: selectedDate,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now(),
+                                  ).then((value) {
+                                    setState(() {
+                                      selectedDate = value!;
+                                      task = [];
+                                      allTask = [];
+                                    });
+                                    API()
+                                        .attendence(
+                                            widget.token["token"],
+                                            DateFormat("dd-MM-yyyy")
+                                                .format(selectedDate)
+                                                .toString())
+                                        .then((value) {
+                                      print(value.toString());
+                                      if (value.statusCode != 200) {
+                                        return print("error");
+                                      }
+                                      setState(() {
+                                        task = value.data;
+                                        allTask = task;
+                                      });
+                                    });
+                                  });
+                                },
+                                child: Container(
+                                  height: constraints.maxHeight * 0.05,
+                                  width: constraints.maxHeight * 0.05,
+                                  margin: EdgeInsets.only(left: 4),
+                                  alignment: Alignment.center,
+                                  child: Card(
+                                    elevation: 1,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.calendar_month,
+                                        size: width < 700
+                                            ? width / 24
+                                            : width / 45,
+                                        color: Color.fromARGB(255, 27, 24, 73),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                height: constraints.maxHeight * 0.05,
-                                width: constraints.maxHeight * 0.05,
-                                margin: EdgeInsets.only(left: 4),
-                                alignment: Alignment.center,
-                                child: Card(
-                                  elevation: 1,
-                                  child: Center(
-                                    child: InkWell(
-                                        onTap: () {
-                                          _showAction();
-                                        },
-                                        child: Icon(
-                                          Icons.sort,
-                                          size: width < 700
-                                              ? width / 24
-                                              : width / 45,
-                                          color:
-                                              Color.fromARGB(255, 27, 24, 73),
-                                        )),
+                              InkWell(
+                                onTap: () {
+                                  _showAction();
+                                },
+                                child: Container(
+                                  height: constraints.maxHeight * 0.05,
+                                  width: constraints.maxHeight * 0.05,
+                                  margin: EdgeInsets.only(left: 4),
+                                  alignment: Alignment.center,
+                                  child: Card(
+                                    elevation: 1,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.sort,
+                                        size: width < 700
+                                            ? width / 24
+                                            : width / 45,
+                                        color: Color.fromARGB(255, 27, 24, 73),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

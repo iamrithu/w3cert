@@ -6,8 +6,14 @@ class CustomContainer extends StatelessWidget {
   final widht;
   final String? content;
   final Function click;
+  final IconData icon;
   const CustomContainer(
-      {Key? key, this.height, this.widht, this.content, required this.click})
+      {Key? key,
+      this.height,
+      this.widht,
+      this.content,
+      required this.click,
+      required this.icon})
       : super(key: key);
 
   @override
@@ -17,26 +23,32 @@ class CustomContainer extends StatelessWidget {
         click();
       },
       child: Card(
+        color: Colors.blue[50],
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(4),
         ),
         elevation: 10,
         child: Container(
           width: widht,
           height: height,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border:
-                  Border.all(color: Color.fromARGB(255, 27, 24, 73), width: 2)),
-          child: Center(
-            child: Text(
-              content!,
-              style: GoogleFonts.ptSans(
-                  color: Color.fromARGB(255, 27, 24, 73),
-                  fontSize: widht < 700 ? widht / 24 : widht / 45,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0),
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Color.fromARGB(255, 27, 24, 73),
+                size: widht * 0.1,
+              ),
+              Text(
+                content!,
+                style: GoogleFonts.ptSans(
+                    color: Color.fromARGB(255, 27, 24, 73),
+                    fontSize: widht < 700 ? widht / 24 : widht / 45,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0),
+              ),
+            ],
           ),
         ),
       ),

@@ -219,70 +219,71 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                   children: [
                     Row(
                       children: [
-                        Container(
-                          height: constraints.maxHeight * 0.05,
-                          width: constraints.maxHeight * 0.05,
-                          margin: EdgeInsets.only(left: 4),
-                          alignment: Alignment.center,
-                          child: Center(
-                            child: InkWell(
-                                onTap: () {
-                                  context.pop();
-                                },
+                        InkWell(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Container(
+                            height: constraints.maxHeight * 0.05,
+                            width: constraints.maxHeight * 0.05,
+                            margin: EdgeInsets.only(left: 4),
+                            alignment: Alignment.center,
+                            child: Card(
+                              elevation: 1,
+                              child: Center(
                                 child: Icon(
                                   Icons.arrow_back,
                                   size: width < 700 ? width / 24 : width / 45,
                                   color: Color.fromARGB(255, 27, 24, 73),
-                                )),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        Text(
-                          "Tasks ",
-                          style: GoogleFonts.ptSans(
-                              color: Color.fromARGB(255, 27, 24, 73),
-                              fontSize: width < 700 ? width / 24 : width / 45,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0),
+                        Container(
+                          width: width * 0.55,
+                          child: Text(
+                            "Tasks",
+                            style: GoogleFonts.ptSans(
+                                color: Color.fromARGB(255, 27, 24, 73),
+                                fontSize: width < 700 ? width / 30 : width / 45,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0),
+                          ),
                         ),
-                        Text(
-                          "(",
-                          style: GoogleFonts.ptSans(
-                              color: Color.fromARGB(255, 27, 24, 73),
-                              fontSize: width < 700 ? width / 24 : width / 45,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0),
-                        ),
-                        Text(
-                          "$sorts",
-                          style: GoogleFonts.ptSans(
-                              color: sorts == "Completed"
-                                  ? Colors.green
-                                  : sorts == "All"
-                                      ? Color.fromARGB(255, 27, 24, 73)
-                                      : Colors.red,
-                              fontSize: width < 700 ? width / 40 : width / 45,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0),
-                        ),
-                        Text(
-                          ")",
-                          style: GoogleFonts.ptSans(
-                              color: Color.fromARGB(255, 27, 24, 73),
-                              fontSize: width < 700 ? width / 24 : width / 45,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0),
-                        ),
+                        // Container(
+                        //   width: width * 0.3,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.end,
+                        //     children: [
+                        //       Container(
+                        //         height: constraints.maxHeight * 0.05,
+                        //         width: constraints.maxHeight * 0.05,
+                        //         margin: EdgeInsets.only(left: 4),
+                        //         alignment: Alignment.center,
+                        //         child: Card(
+                        //           elevation: 1,
+                        //           child: Center(
+                        //             child: InkWell(
+                        //                 onTap: () {
+                        //                   _showFilter();
+                        //                 },
+                        //                 child: Icon(
+                        //                   Icons.sort,
+                        //                   size: width < 700
+                        //                       ? width / 24
+                        //                       : width / 45,
+                        //                   color:
+                        //                       Color.fromARGB(255, 27, 24, 73),
+                        //                 )),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // )
                       ],
                     ),
-                    InkWell(
-                      onTap: () {
-                        _showFilter();
-                      },
-                      child: Icon(
-                        Icons.sort,
-                        color: Color.fromARGB(255, 27, 24, 73),
-                      ),
-                    )
                   ],
                 ),
               ),
