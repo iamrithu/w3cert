@@ -121,7 +121,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: Container(
         width: width,
         height: height,
-        color: Color.fromARGB(144, 27, 24, 73),
+        color: Colors.blue[50],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

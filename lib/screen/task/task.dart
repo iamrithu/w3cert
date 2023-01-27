@@ -211,9 +211,6 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
               Container(
                 width: width,
                 height: constraints.maxHeight * 0.08,
-                margin: EdgeInsets.only(
-                  right: 4,
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -106,9 +106,6 @@ class _AttendenceScreenState extends ConsumerState<AttendenceScreen> {
               Container(
                 width: width,
                 height: constraints.maxHeight * 0.08,
-                margin: EdgeInsets.only(
-                  right: 4,
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
