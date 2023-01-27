@@ -43,7 +43,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             CustomContainer(
               click: () {
-                context.pushNamed(RouterConstants.attendence);
+                context.pushNamed(RouterConstants.attendence,
+                    queryParams: {"token": ref.watch(tokenProvider)});
               },
               content: "Attendence",
               height: height * 0.1,

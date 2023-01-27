@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:w3cert/provider/provider.dart';
+import 'package:w3cert/screen/task/widget/task-add-screen.dart';
 
 import '../../api/api.dart';
 
@@ -25,6 +27,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
   List<dynamic> allTask = [];
   List<dynamic> task = [];
   String? sorts = "All";
+  String? TaskCategory = "Choose Task Category";
   @override
   void initState() {
     super.initState();
@@ -43,6 +46,22 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    reload() {
+      setState(() {
+        task = [];
+        allTask = [];
+      });
+      API().task(widget.token["token"]).then((value) {
+        if (value.statusCode != 200) {
+          return print("error");
+        }
+        setState(() {
+          task = value.data;
+          allTask = task;
+        });
+      });
+    }
 
     sorting(String? sort) {
       var newList = [];
@@ -161,33 +180,14 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(elevation: 10),
         onPressed: () {
-          showGeneralDialog(
+          showModalBottomSheet<void>(
+            isScrollControlled: true,
             context: context,
-            barrierColor: Colors.black12.withOpacity(0.6), // Background color
-            barrierDismissible: true,
-            barrierLabel: 'Dialog',
-            transitionDuration: Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) {
-              return Scaffold(
-                backgroundColor: Color.fromARGB(90, 255, 255, 255),
-                body: Container(
-                  width: width,
-                  height: height,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                        Text("riji"),
-                      ],
-                    ),
-                  ),
+            builder: (BuildContext context) {
+              return Container(
+                height: height,
+                child: TaskAddScreen(
+                  onClick: reload,
                 ),
               );
             },
@@ -210,7 +210,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
             return Column(children: [
               Container(
                 width: width,
-                height: constraints.maxHeight * 0.05,
+                height: constraints.maxHeight * 0.08,
                 margin: EdgeInsets.only(
                   right: 4,
                 ),
@@ -288,7 +288,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
               ),
               Container(
                   width: width,
-                  height: constraints.maxHeight * 0.95,
+                  height: constraints.maxHeight * 0.92,
                   child: task.isEmpty
                       ? Center(
                           child: LoadingAnimationWidget.newtonCradle(
@@ -344,54 +344,54 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                                                                   ["users"][0]
                                                               ["image_url"]),
                                                     )),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        _shoeAction(task[i]);
-                                                      },
-                                                      child: Container(
-                                                        width: constraints
-                                                                .maxWidth *
-                                                            0.15,
-                                                        height: constraints
-                                                                .maxHeight *
-                                                            0.03,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    27,
-                                                                    24,
-                                                                    73),
-                                                          ),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "Action",
-                                                            style: GoogleFonts.ptSans(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        27,
-                                                                        24,
-                                                                        73),
-                                                                fontSize:
-                                                                    width <
-                                                                            700
-                                                                        ? width /
-                                                                            40
-                                                                        : width /
-                                                                            45,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                letterSpacing:
-                                                                    0),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
+                                                    // InkWell(
+                                                    //   onTap: () {
+                                                    //     _shoeAction(task[i]);
+                                                    //   },
+                                                    //   child: Container(
+                                                    //     width: constraints
+                                                    //             .maxWidth *
+                                                    //         0.15,
+                                                    //     height: constraints
+                                                    //             .maxHeight *
+                                                    //         0.03,
+                                                    //     decoration:
+                                                    //         BoxDecoration(
+                                                    //       border: Border.all(
+                                                    //         color:
+                                                    //             Color.fromARGB(
+                                                    //                 255,
+                                                    //                 27,
+                                                    //                 24,
+                                                    //                 73),
+                                                    //       ),
+                                                    //     ),
+                                                    //     child: Center(
+                                                    //       child: Text(
+                                                    //         "Action",
+                                                    //         style: GoogleFonts.ptSans(
+                                                    //             color: Color
+                                                    //                 .fromARGB(
+                                                    //                     255,
+                                                    //                     27,
+                                                    //                     24,
+                                                    //                     73),
+                                                    //             fontSize:
+                                                    //                 width <
+                                                    //                         700
+                                                    //                     ? width /
+                                                    //                         40
+                                                    //                     : width /
+                                                    //                         45,
+                                                    //             fontWeight:
+                                                    //                 FontWeight
+                                                    //                     .w500,
+                                                    //             letterSpacing:
+                                                    //                 0),
+                                                    //       ),
+                                                    //     ),
+                                                    //   ),
+                                                    // )
                                                   ],
                                                 ),
                                               ),
@@ -629,7 +629,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                                                                               45,
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .w500,
+                                                                              .w800,
                                                                       letterSpacing:
                                                                           0),
                                                                 ),
@@ -707,7 +707,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                                                                   .maxWidth *
                                                               0.17,
                                                           child: Text(
-                                                            " Due Date:",
+                                                            " Due Date: ",
                                                             style: GoogleFonts.ptSans(
                                                                 color:
                                                                     Colors.grey,
@@ -734,24 +734,27 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                                                                   task[i]["due_on"]
                                                                           .isEmpty
                                                                       ? "--"
-                                                                      : task[i][
-                                                                          "due_on"],
+                                                                      : task[i]["due_on"] ==
+                                                                              "--"
+                                                                          ? "--"
+                                                                          : DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).year == DateTime.now().year && DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).month == DateTime.now().month && DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).day == DateTime.now().day
+                                                                              ? "Today"
+                                                                              : DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).isBefore(DateTime.now().toUtc())
+                                                                                  ? task[i]["due_on"] + " (over due)"
+                                                                                  : task[i]["due_on"],
                                                                   style: GoogleFonts.ptSans(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          27,
-                                                                          24,
-                                                                          73),
-                                                                      fontSize: width < 700
-                                                                          ? width /
-                                                                              38
-                                                                          : width /
-                                                                              45,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      letterSpacing:
-                                                                          0),
+                                                                      color: task[i]["due_on"].isEmpty
+                                                                          ? Color.fromARGB(255, 27, 24, 73)
+                                                                          : task[i]["due_on"] == "--"
+                                                                              ? Color.fromARGB(255, 27, 24, 73)
+                                                                              : DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).year == DateTime.now().year && DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).month == DateTime.now().month && DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).day == DateTime.now().day
+                                                                                  ? Color.fromARGB(255, 27, 24, 73)
+                                                                                  : DateFormat("dd-MM-yyyy").parse(task[i]["due_on"]).isBefore(DateTime.now().toUtc())
+                                                                                      ? Color.fromARGB(255, 238, 7, 7)
+                                                                                      : Color.fromARGB(255, 5, 163, 21),
+                                                                      fontSize: width < 700 ? width / 38 : width / 45,
+                                                                      fontWeight: FontWeight.w600,
+                                                                      letterSpacing: 0),
                                                                 ),
                                                               ),
                                                             ],
@@ -815,7 +818,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                                                                               45,
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .w500,
+                                                                              .w700,
                                                                       letterSpacing:
                                                                           0),
                                                                 ),

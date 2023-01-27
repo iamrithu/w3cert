@@ -62,7 +62,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             return Column(children: [
               Container(
                 width: width,
-                height: constraints.maxHeight * 0.05,
+                height: constraints.maxHeight * 0.08,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -118,7 +118,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               Container(
                 width: width,
-                height: constraints.maxHeight * 0.95,
+                height: constraints.maxHeight * 0.92,
                 child: notification.isEmpty
                     ? Center(
                         child: LoadingAnimationWidget.hexagonDots(
@@ -138,7 +138,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     color: Color.fromARGB(255, 27, 24, 73),
                                     child: Container(
                                       width: constraints.maxWidth,
-                                      height: constraints.maxHeight * 0.12,
+                                      height: constraints.maxHeight * 0.09,
                                     )),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -150,7 +150,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       ),
                                       child: Container(
                                           width: constraints.maxWidth * 0.97,
-                                          height: constraints.maxHeight * 0.12,
+                                          height: constraints.maxHeight * 0.09,
                                           alignment: Alignment.center,
                                           child: Row(
                                             children: [
@@ -161,7 +161,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                     child: CircleAvatar(
                                                   maxRadius:
                                                       constraints.maxWidth *
-                                                          0.07,
+                                                          0.04,
                                                   backgroundImage: NetworkImage(
                                                       notification[i]
                                                               ["image"] ??
@@ -190,16 +190,45 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                     children: [
                                                       Row(
                                                         children: [
+                                                          Flexible(
+                                                            child: Text(
+                                                              notification[i][
+                                                                      "text"] ??
+                                                                  "its null",
+                                                              style: GoogleFonts.ptSans(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          27,
+                                                                          24,
+                                                                          73),
+                                                                  fontSize: width <
+                                                                          700
+                                                                      ? width /
+                                                                          32
+                                                                      : width /
+                                                                          45,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  letterSpacing:
+                                                                      0),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
                                                           Text(
                                                             notification[i][
-                                                                    "subject"] ??
+                                                                    "typecase"] ??
                                                                 "not working",
                                                             style: GoogleFonts.ptSans(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: width <
                                                                         700
-                                                                    ? width / 28
+                                                                    ? width / 35
                                                                     : width /
                                                                         45,
                                                                 fontWeight:
@@ -207,31 +236,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                         .w400,
                                                                 letterSpacing:
                                                                     0),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Flexible(
-                                                            child: Text(
-                                                              notification[i][
-                                                                      "text"] ??
-                                                                  "its null",
-                                                              style: GoogleFonts.ptSans(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: width <
-                                                                          700
-                                                                      ? width /
-                                                                          38
-                                                                      : width /
-                                                                          45,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  letterSpacing:
-                                                                      0),
-                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -255,36 +259,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                   letterSpacing:
                                                                       0),
                                                             ),
-                                                            Card(
-                                                              elevation: 10,
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        2.0),
-                                                                child: Text(
-                                                                  timeVatiation(
-                                                                      notification[
-                                                                              i]
-                                                                          [
-                                                                          "updated_at"]),
-                                                                  style: GoogleFonts.ptSans(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          27,
-                                                                          24,
-                                                                          73),
-                                                                      fontSize: width < 700
-                                                                          ? width /
-                                                                              40
-                                                                          : width /
-                                                                              45,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      letterSpacing:
-                                                                          0),
-                                                                ),
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left: width *
+                                                                          0.1),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(4),
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .blue[50],
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              child: Text(
+                                                                timeVatiation(
+                                                                    notification[
+                                                                            i][
+                                                                        "updated_at"]),
+                                                                style: GoogleFonts.ptSans(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            27,
+                                                                            24,
+                                                                            73),
+                                                                    fontSize: width <
+                                                                            700
+                                                                        ? width /
+                                                                            40
+                                                                        : width /
+                                                                            45,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    letterSpacing:
+                                                                        0),
                                                               ),
                                                             ),
                                                           ],

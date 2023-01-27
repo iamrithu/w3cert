@@ -1,16 +1,16 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
 
-import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:w3cert/api/api.dart';
 import 'package:w3cert/provider/provider.dart';
-import 'package:w3cert/router/route-const.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -23,7 +23,73 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool visible = false;
+  bool isChecked = false;
+
   final _formKey = GlobalKey<FormState>();
+  setLoggedInDetails(email, password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Email', email);
+    await prefs.setString('Password', password);
+    await prefs.setString('autoLogin', "true");
+  }
+
+  getlocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getEmail = prefs.getString('Email');
+    final String? getPassword = prefs.getString('Password');
+    final String? getAutoLogin = prefs.getString('autoLogin');
+
+    if (getAutoLogin == null || getAutoLogin.isEmpty) {
+      return;
+    } else {
+      setState(() {
+        isChecked = true;
+        _email.text = getEmail!;
+        _password.text = getPassword!;
+      });
+      authendication(getEmail!, getPassword!);
+    }
+  }
+
+  authendication(String email, String password) {
+    setState(() {
+      visible = !visible;
+    });
+    API().authendication(email, password).then((value) {
+      if (value.statusCode != 200) {
+        setState(() {
+          visible = !visible;
+        });
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: '${value.data["error"]["message"]}',
+        );
+        return null;
+      }
+      setState(() {
+        visible = !visible;
+      });
+      if (isChecked) {
+        setLoggedInDetails(email, password);
+      }
+      ;
+      print("i am also working");
+
+      ref
+          .read(tokenProvider.notifier)
+          .update((state) => value.data["data"]["token"]);
+
+      ref.read(loggedInProvider.notifier).state = true;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getlocal();
+  }
 
   @override
   void dispose() {
@@ -35,35 +101,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Color.fromARGB(255, 27, 24, 73);
+      }
+      return Color.fromARGB(255, 27, 24, 73);
+    }
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
-    authendication(String email, String password) {
-      setState(() {
-        visible = !visible;
-      });
-      API().authendication(email, password).then((value) {
-        if (value.statusCode != 200) {
-          setState(() {
-            visible = !visible;
-          });
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            text: '${value.data["error"]["message"]}',
-          );
-          return null;
-        }
-        setState(() {
-          visible = !visible;
-        });
-        ref
-            .read(tokenProvider.notifier)
-            .update((state) => value.data["data"]["token"]);
-
-        ref.read(loggedInProvider.notifier).state = true;
-      });
-    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -79,7 +130,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 Container(
                   width: width * 0.9,
-                  height: height * 0.38,
+                  height: height * 0.45,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: Card(
@@ -145,6 +196,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             width: width * 0.8,
                             height: height * 0.095,
                             child: TextFormField(
+                              obscureText: true,
                               controller: _password,
                               keyboardType: TextInputType.text,
                               decoration: const InputDecoration(
@@ -158,6 +210,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                                 return null;
                               },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateProperty.resolveWith(
+                                      getColor),
+                                  value: isChecked,
+                                  onChanged: (bool? value) async {
+                                    setState(() {
+                                      isChecked = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  "Stay Logged In",
+                                  style: GoogleFonts.ptSans(
+                                      color: Color.fromARGB(255, 27, 24, 73),
+                                      fontSize: width * 0.028,
+                                      fontWeight: FontWeight.normal,
+                                      letterSpacing: 0),
+                                ),
+                              ],
                             ),
                           ),
                           ElevatedButton(
@@ -189,7 +268,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   visible: visible,
                   child: Container(
                     width: width * 0.9,
-                    height: height * 0.38,
+                    height: height * 0.45,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(10)),
                     child: Card(

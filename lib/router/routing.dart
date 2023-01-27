@@ -84,7 +84,7 @@ class RouterNotifier extends ChangeNotifier {
           path: '/attendence',
           pageBuilder: (context, state) {
             return MaterialPage(
-              child: const AttendenceScreen(),
+              child: AttendenceScreen(token: state.queryParams),
             );
           },
         ),
